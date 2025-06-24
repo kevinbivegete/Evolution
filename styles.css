@@ -23,7 +23,6 @@ body {
   line-height: 1.6;
   color: var(--text-dark);
   background: var(--white);
-  background-color: red;
 }
 
 .container {
