@@ -12,11 +12,7 @@
     <header class="header">
       <nav class="container navbar">
         <div class="logo-container">
-          <div class="logo-icon">E</div>
-          <div class="logo-text">
-            <div class="company-name">Evolution Inc</div>
-            <div class="tagline">Enterprise Solutions</div>
-          </div>
+          <img src="logo-1.png" alt="Evolution Inc Logo" class="logo" />
         </div>
         <ul class="nav-menu">
           <li><a href="#home" class="active">Home</a></li>
@@ -524,31 +520,50 @@
           </div>
 
           <div class="contact-form slide-in-right">
-            <form>
+            <form action="https://formspree.io/f/xayzqkqr" method="POST">
               <div class="form-row">
                 <div class="form-group">
-                  <input type="text" placeholder="First Name *" required />
+                  <input
+                    type="text"
+                    name="firstName"
+                    placeholder="First Name *"
+                    required
+                  />
                 </div>
                 <div class="form-group">
-                  <input type="text" placeholder="Last Name *" required />
+                  <input
+                    type="text"
+                    name="lastName"
+                    placeholder="Last Name *"
+                    required
+                  />
                 </div>
               </div>
 
               <div class="form-row">
                 <div class="form-group">
-                  <input type="email" placeholder="Email Address *" required />
+                  <input
+                    type="email"
+                    name="email"
+                    placeholder="Email Address *"
+                    required
+                  />
                 </div>
                 <div class="form-group">
-                  <input type="tel" placeholder="Phone Number" />
+                  <input type="tel" name="phone" placeholder="Phone Number" />
                 </div>
               </div>
 
               <div class="form-group">
-                <input type="text" placeholder="Organization/Company" />
+                <input
+                  type="text"
+                  name="organization"
+                  placeholder="Organization/Company"
+                />
               </div>
 
               <div class="form-group">
-                <select required>
+                <select name="serviceInterest" required>
                   <option value="">Select Service Interest *</option>
                   <option value="weather">Weather & Climate Systems</option>
                   <option value="mobile">Mobile App Development</option>
@@ -562,6 +577,7 @@
 
               <div class="form-group">
                 <textarea
+                  name="projectDescription"
                   placeholder="Project Description & Requirements *"
                   required
                 ></textarea>
@@ -704,18 +720,53 @@
         .addEventListener("submit", function (e) {
           e.preventDefault();
 
-          // Show success message
           const submitBtn = this.querySelector(".submit-btn");
           const originalText = submitBtn.textContent;
-          submitBtn.textContent = "Message Sent Successfully!";
-          submitBtn.style.background = "var(--success-color)";
+          const originalBackground = submitBtn.style.background;
 
-          // Reset after 3 seconds
-          setTimeout(() => {
-            submitBtn.textContent = originalText;
-            submitBtn.style.background = "var(--gold-accent)";
-            this.reset();
-          }, 3000);
+          // Show loading state
+          submitBtn.textContent = "Sending...";
+          submitBtn.disabled = true;
+
+          // Get form data
+          const formData = new FormData(this);
+
+          // Submit to Formspree
+          fetch(this.action, {
+            method: "POST",
+            body: formData,
+            headers: {
+              Accept: "application/json",
+            },
+          })
+            .then((response) => {
+              if (response.ok) {
+                // Success
+                submitBtn.textContent = "Message Sent Successfully!";
+                submitBtn.style.background = "var(--success-color)";
+                this.reset();
+
+                // Reset after 3 seconds
+                setTimeout(() => {
+                  submitBtn.textContent = originalText;
+                  submitBtn.style.background = originalBackground;
+                  submitBtn.disabled = false;
+                }, 3000);
+              } else {
+                throw new Error("Network response was not ok");
+              }
+            })
+            .catch((error) => {
+              // Error handling
+              submitBtn.textContent = "Error - Please Try Again";
+              submitBtn.style.background = "#e53e3e";
+
+              setTimeout(() => {
+                submitBtn.textContent = originalText;
+                submitBtn.style.background = originalBackground;
+                submitBtn.disabled = false;
+              }, 3000);
+            });
         });
 
       // Remove parallax effect to prevent layout issues
