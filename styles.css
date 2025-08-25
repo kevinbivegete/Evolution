@@ -72,6 +72,28 @@ body {
   font-size: 1.2rem;
 }
 
+.logo {
+  height: 64px;
+  width: auto;
+  max-width: 280px;
+  object-fit: contain;
+}
+
+/* Responsive logo sizing */
+@media (max-width: 768px) {
+  .logo {
+    height: 56px;
+    max-width: 240px;
+  }
+}
+
+@media (max-width: 480px) {
+  .logo {
+    height: 48px;
+    max-width: 200px;
+  }
+}
+
 .logo-text {
   display: flex;
   flex-direction: column;
