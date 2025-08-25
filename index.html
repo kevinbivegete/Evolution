@@ -12,7 +12,9 @@
     <header class="header">
       <nav class="container navbar">
         <div class="logo-container">
-          <img src="logo-1.png" alt="Evolution Inc Logo" class="logo" />
+          <a href="#home">
+            <img src="logo-1.png" alt="Evolution Inc Logo" class="logo" />
+          </a>
         </div>
         <ul class="nav-menu">
           <li><a href="#home" class="active">Home</a></li>
@@ -655,6 +657,20 @@
 
       mobileToggle.addEventListener("click", () => {
         navMenu.classList.toggle("active");
+      });
+
+      // Close mobile menu when clicking outside
+      document.addEventListener("click", (e) => {
+        if (!mobileToggle.contains(e.target) && !navMenu.contains(e.target)) {
+          navMenu.classList.remove("active");
+        }
+      });
+
+      // Close mobile menu when clicking on a link
+      navMenu.querySelectorAll("a").forEach((link) => {
+        link.addEventListener("click", () => {
+          navMenu.classList.remove("active");
+        });
       });
 
       // Smooth scrolling
